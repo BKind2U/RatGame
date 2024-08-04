@@ -5,8 +5,6 @@ using UnityEngine.Events;
 
 public class BattleManager : MonoBehaviour
 {
-
-    // for now, has a list of combatants on each team
     private static BattleManager _instance;
     public static BattleManager Instance { get { return _instance; } }
 
@@ -30,6 +28,8 @@ public class BattleManager : MonoBehaviour
             _instance = this;
         }
     }
+
+
 
     public List<CombatantController> playerTeam;
     public List<CombatantController> enemyTeam;
@@ -68,6 +68,9 @@ public class BattleManager : MonoBehaviour
 
     public void CheckConditions(CombatantController deadUnit)
     {
+        // update teams
+        GetCombatants();
+
         // check if the battle has been won or lost. Called when any combatant dies. 
         switch (deadUnit.CombatantData.CombatantTeam)
         {

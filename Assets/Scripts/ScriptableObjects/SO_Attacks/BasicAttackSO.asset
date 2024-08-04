@@ -15,4 +15,4 @@ MonoBehaviour:
   attackName: Basic Attack
   strModifier: 1
   targetType: 0
-  damageType: 0
+  damageType: 1

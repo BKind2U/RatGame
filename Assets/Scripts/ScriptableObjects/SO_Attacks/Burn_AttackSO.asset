@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackName: Burn
   strModifier: 1
-  targetType: 1
+  targetType: 2
   damageType: 2

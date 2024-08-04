@@ -12,6 +12,8 @@ public class Health : MonoBehaviour
     private MessageLog _messageLog;
     private BattleManager _battleManager;
 
+    public bool isAlive = true;
+
     private float _currentHealth;
     [SerializeField] private Image _healthBar;
 
@@ -36,12 +38,12 @@ public class Health : MonoBehaviour
         damageInfo.Amount = Mathf.Max(1, damageInfo.Amount); // ensures damage isn't negative or 0
 
         _currentHealth -= damageInfo.Amount;
-        Mathf.Clamp(_currentHealth, 0, CombatantData.baseMaxHealth);
+        _currentHealth = Mathf.Clamp(_currentHealth, 0, CombatantData.baseMaxHealth);
         _messageLog.DisplayMessage(CombatantData.CharacterName + " takes " + damageInfo.Amount.ToString() + " " + damageInfo.DamageType.ToString() + " damage");
 
         UpdateHealthBar();
 
-        if (_currentHealth == 0) Die();
+        if (_currentHealth <= 0) Die();
     }
 
     private void UpdateHealthBar()
@@ -53,6 +55,7 @@ public class Health : MonoBehaviour
     {
         _messageLog.DisplayMessage(CombatantData.CharacterName + " died!");
         _battleManager.CheckConditions(Combatant);
+        isAlive = false;
         Destroy(gameObject);
     }
 }

@@ -15,10 +15,9 @@ MonoBehaviour:
   CharacterName: Dummy
   CombatantTeam: 2
   CombatantFoeTeam: 1
-  attackType: {fileID: 11400000, guid: 33c2d6b9e42dfaa45bfc75ae232b32fb, type: 2}
-  baseMaxHealth: 2
-  baseMaxMana: 10
-  baseManaRegen: 1
-  baseStrength: 5
+  baseMaxHealth: 200
+  baseMaxMana: 1
+  baseManaRegen: 0
+  baseStrength: 0
   baseDefence: 0
-  baseAtkSpeed: 0.1
+  baseAtkSpeed: 0

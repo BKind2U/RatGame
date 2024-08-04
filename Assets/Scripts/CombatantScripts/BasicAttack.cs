@@ -12,11 +12,13 @@ public class BasicAttack : MonoBehaviour
 
     [SerializeField] private SO_Attack _attackData;
 
+    [SerializeField] private Image _atkBar;
 
     public DamageInfo damageInfo;
 
     private BattleManager _battleManager;
     [SerializeField] private CombatantController _parentController;
+    private SO_Combatant _combatantData;
     private MessageLog _messageLog;
 
     private void OnValidate()
@@ -24,6 +26,7 @@ public class BasicAttack : MonoBehaviour
         // get managers
         if (_messageLog == null) _messageLog = _parentController.messageLog;
         if (_battleManager == null) _battleManager = _parentController.battleManager;
+        if (_combatantData == null) _combatantData = _parentController.CombatantData;
     }
 
     private void Start()
@@ -60,8 +63,8 @@ public class BasicAttack : MonoBehaviour
 
         foreach (CombatantController obj in combatants)
         {
-            // make sure you don't attack your allies!
-            if (obj != null && obj.CombatantData.CombatantTeam != _parentController.CombatantData.CombatantTeam)
+            // make sure the target is of the target team!
+            if (obj != null && obj.CombatantData.CombatantTeam == _combatantData.CombatantFoeTeam)
             {
                 float distance = Vector3.Distance(referencePosition, obj.transform.position);
 
@@ -79,12 +82,12 @@ public class BasicAttack : MonoBehaviour
     CombatantController FindFarthestEnemy(List<CombatantController> combatants, Vector3 referencePosition)
     {
         CombatantController farthest = null;
-        float minDistance = Mathf.Infinity;
+        float minDistance = 0.5f;
 
         foreach (CombatantController obj in combatants)
         {
-            // make sure you don't attack your allies!
-            if (obj != null && obj.CombatantData.CombatantTeam != _parentController.CombatantData.CombatantTeam)
+            // make sure the target is of the target team!
+            if (obj != null && obj.CombatantData.CombatantTeam == _combatantData.CombatantFoeTeam)
             {
                 float distance = Vector3.Distance(referencePosition, obj.transform.position);
 
@@ -103,13 +106,24 @@ public class BasicAttack : MonoBehaviour
     {
         CombatantController randomEnemy = null;
 
-        int randomValue = Random.Range(0, combatants.Count);
-        randomEnemy = combatants[randomValue];
+
+        SO_Combatant enemyData;
+
+        while (randomEnemy == null)
+        {
+            int randomValue = Random.Range(0, combatants.Count);
+            CombatantController pickedEnemy = combatants[randomValue];
+
+            randomEnemy = combatants[randomValue];
+
+            // make sure target is on the intended team
+            enemyData = randomEnemy.CombatantData;
+            if (enemyData.CombatantTeam == _combatantData.CombatantFoeTeam) randomEnemy = pickedEnemy;
+        }
 
         return randomEnemy;
     }
 
-    private Image _atkBar;
 
     public IEnumerator Attacking()
     {
@@ -124,7 +138,7 @@ public class BasicAttack : MonoBehaviour
                 if (_atkBar.fillAmount == 1)
                 {
                     _atkBar.fillAmount = 0;
-                    PerformAttack(null); // can put null, since default target is the base one
+                    PerformAttack(null); // can put null, since it'll find the target based on default target type
                 }
             }
         yield return null;

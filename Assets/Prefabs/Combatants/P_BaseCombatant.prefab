@@ -124,6 +124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackData: {fileID: 11400000, guid: 33c2d6b9e42dfaa45bfc75ae232b32fb, type: 2}
+  _atkBar: {fileID: 7213533312751357103}
   _parentController: {fileID: 3546591067550866285}
 --- !u!114 &7213533312751357103 stripped
 MonoBehaviour:
